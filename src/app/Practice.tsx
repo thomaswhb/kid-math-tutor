@@ -17,7 +17,6 @@ export default function Practice() {
 
   const current = session?.problems[session.currentIndex]
   const currentAnswer = session?.answers[session.currentIndex]
-  const isAnswered = currentAnswer !== null
   const isLast = session ? session.currentIndex === session.problems.length - 1 : false
 
   const [hasFeedback, setHasFeedback] = useState(false)
