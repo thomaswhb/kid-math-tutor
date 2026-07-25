@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
-import { Progress } from '../types'
+import { type Progress } from '../types'
 
 interface ProgressState {
   progress: Record<string, Progress>
@@ -9,7 +9,7 @@ interface ProgressState {
 
 export const useProgressStore = create<ProgressState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       progress: {},
       update: (gradeId, score) =>
         set((state) => {

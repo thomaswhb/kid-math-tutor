@@ -1,4 +1,4 @@
-import { GradeConfig } from '../types'
+import { type GradeConfig } from '../types'
 
 export const grades: GradeConfig[] = [
   {

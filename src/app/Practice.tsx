@@ -4,6 +4,7 @@ import { ArrowLeft } from 'lucide-react'
 import { useSessionStore } from '../store/useSessionStore'
 import { useProgressStore } from '../store/useProgressStore'
 import { grades } from '../data/grades'
+import { type Problem } from '../types'
 
 export default function Practice() {
   const { gradeId } = useParams<{ gradeId: string }>()
@@ -49,7 +50,10 @@ export default function Practice() {
     <div className="min-h-screen bg-slate-950 text-white p-6">
       <div className="max-w-md mx-auto">
         <div className="flex items-center gap-3 mb-6">
-          <button onClick={() => navigate('/')} className="p-2 -ml-2 rounded-xl hover:bg-slate-800">
+          <button
+            onClick={() => navigate('/')}
+            className="p-2 -ml-2 rounded-xl hover:bg-slate-800"
+          >
             <ArrowLeft className="w-6 h-6" />
           </button>
           <div className="flex-1">

@@ -17,15 +17,35 @@ export default function Result() {
 
   const { problems, answers } = session
   let correct = 0
-  const wrongs: { a: number; b: number; op: string; yours: number | null; answer: number }[] = []
+  const wrongs: {
+    a: number
+    b: number
+    op: string
+    yours: number | null
+    answer: number
+  }[] = []
 
   problems.forEach((p, i) => {
     if (answers[i] === p.answer) correct++
-    else wrongs.push({ a: p.a, b: p.b, op: p.op, yours: answers[i], answer: p.answer })
+    else
+      wrongs.push({
+        a: p.a,
+        b: p.b,
+        op: p.op,
+        yours: answers[i],
+        answer: p.answer,
+      })
   })
 
   const percent = Math.round((correct / problems.length) * 100)
-  const star = percent >= 90 ? '⭐⭐⭐' : percent >= 70 ? '⭐⭐' : percent >= 50 ? '⭐' : '💪'
+  const star =
+    percent >= 90
+      ? '⭐⭐⭐'
+      : percent >= 70
+        ? '⭐⭐'
+        : percent >= 50
+          ? '⭐'
+          : '💪'
 
   return (
     <div className="min-h-screen bg-slate-950 text-white p-6">
@@ -59,9 +79,13 @@ export default function Result() {
             </h2>
             <div className="space-y-3">
               {wrongs.map((w, i) => (
-                <div key={i} className="bg-slate-950 rounded-xl p-4 flex items-center justify-between">
+                <div
+                  key={i}
+                  className="bg-slate-950 rounded-xl p-4 flex items-center justify-between"
+                >
                   <div className="text-lg tabular-nums">
-                    {w.a} {w.op} {w.b} = <span className="text-danger font-semibold">{w.yours ?? '空'}</span>
+                    {w.a} {w.op} {w.b} ={' '}
+                    <span className="text-danger font-semibold">{w.yours ?? '空'}</span>
                   </div>
                   <div className="text-success tabular-nums">= {w.answer}</div>
                 </div>

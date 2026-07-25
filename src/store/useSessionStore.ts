@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { Problem, Session } from '../types'
+import { type Problem, type Session } from '../types'
 import { generateProblem } from '../hooks/generateProblem'
 
 interface SessionState {
