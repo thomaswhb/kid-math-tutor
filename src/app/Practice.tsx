@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
 import { useSessionStore } from '../store/useSessionStore'
@@ -20,13 +20,20 @@ export default function Practice() {
   const isAnswered = currentAnswer !== null
   const isLast = session ? session.currentIndex === session.problems.length - 1 : false
 
+  const [hasFeedback, setHasFeedback] = useState(false)
+
   useEffect(() => {
     if (!gradeId || !grade) {
       navigate('/')
       return
     }
     init(gradeId, grade.count)
+    setHasFeedback(false)
   }, [gradeId, grade, init, navigate])
+
+  useEffect(() => {
+    setHasFeedback(false)
+  }, [session?.currentIndex])
 
   if (!session || !current) {
     return (
@@ -36,12 +43,18 @@ export default function Practice() {
     )
   }
 
-  const handleSubmit = () => {
-    if (isAnswered && isLast) {
+  const handleCheck = () => {
+    if (currentAnswer !== null) {
+      setHasFeedback(true)
+    }
+  }
+
+  const handleNext = () => {
+    if (isLast) {
       const score = calcScore(session.problems, session.answers)
       useProgressStore.getState().update(gradeId!, score)
       navigate(`/result/${gradeId}`)
-    } else if (isAnswered) {
+    } else {
       next()
     }
   }
@@ -91,22 +104,32 @@ export default function Practice() {
               onChange={(e) => {
                 const v = e.target.value
                 submit(current.id, v === '' ? null : parseInt(v, 10))
+                if (hasFeedback) setHasFeedback(false)
               }}
-              disabled={isAnswered}
+              disabled={hasFeedback}
               className="w-32 text-center text-3xl font-bold bg-slate-800 border-2 border-slate-700 rounded-2xl py-3 text-white placeholder:text-slate-600 focus:outline-none focus:border-primary disabled:opacity-70"
               placeholder="?"
               autoFocus
             />
-            <button
-              onClick={handleSubmit}
-              disabled={currentAnswer === null}
-              className="px-6 py-3 bg-primary text-white font-semibold rounded-2xl disabled:opacity-40 active:scale-95 transition-transform"
-            >
-              {isAnswered ? (isLast ? '完成' : '下一题') : '确定'}
-            </button>
+            {!hasFeedback ? (
+              <button
+                onClick={handleCheck}
+                disabled={currentAnswer === null}
+                className="px-6 py-3 bg-primary text-white font-semibold rounded-2xl disabled:opacity-40 active:scale-95 transition-transform"
+              >
+                确定
+              </button>
+            ) : (
+              <button
+                onClick={handleNext}
+                className="px-6 py-3 bg-primary text-white font-semibold rounded-2xl active:scale-95 transition-transform"
+              >
+                {isLast ? '完成' : '下一题'}
+              </button>
+            )}
           </div>
 
-          {isAnswered && (
+          {hasFeedback && (
             <div className="mt-6 text-lg">
               {currentAnswer === current.answer ? (
                 <span className="text-success font-semibold">✓ 正确！太棒了</span>
