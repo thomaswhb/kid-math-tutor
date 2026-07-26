@@ -20,7 +20,7 @@ describe('generateProblem', () => {
     expect(p.topic).toBe('y9-factorise')
   })
 
-  it('generates index law question', () => {
+  it('generates mixed/law index question', () => {
     const p = generateProblem('y9-algebra', ['y9-indices'])
     expect(p.question).toMatch(/Simplify:/)
   })
