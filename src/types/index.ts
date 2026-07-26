@@ -1,15 +1,14 @@
 export interface Problem {
   id: string
-  a: number
-  b: number
-  op: '+' | '-' | '*' | '/'
-  answer: number
+  question: string
+  answer: number | string
+  topic?: string
 }
 
 export interface Session {
   gradeId: string
   problems: Problem[]
-  answers: (number | null)[]
+  answers: (number | null | string)[]
   currentIndex: number
   startedAt: number
 }
@@ -18,8 +17,7 @@ export interface GradeConfig {
   id: string
   title: string
   subtitle: string
-  range: [number, number]
-  operations: ('+' | '-' | '*' | '/')[]
+  topics: string[]
   count: number
 }
 

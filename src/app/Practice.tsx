@@ -43,7 +43,7 @@ export default function Practice() {
   }
 
   const handleCheck = () => {
-    if (currentAnswer !== null) {
+    if (currentAnswer !== null && currentAnswer !== undefined && currentAnswer !== '') {
       setHasFeedback(true)
     }
   }
@@ -93,66 +93,88 @@ export default function Practice() {
         </div>
 
         <div className="bg-surface border border-white/10 rounded-3xl p-8 text-center shadow-2xl shadow-black/30 backdrop-blur-sm">
-          <div className="text-5xl font-bold mb-8 tabular-nums text-slate-100">
-            {current.a} {current.op} {current.b} = ?
+          <div className="text-left text-xl sm:text-2xl font-semibold mb-6 text-slate-100 leading-relaxed">
+            {current.question}
           </div>
 
-          <div className="flex items-center justify-center gap-3">
+          <div className="flex flex-col items-center justify-center gap-3">
             <input
-              type="tel"
-              inputMode="numeric"
+              type="text"
+              inputMode="text"
               value={currentAnswer ?? ''}
               onChange={(e) => {
-                const v = e.target.value
-                submit(current.id, v === '' ? null : parseInt(v, 10))
+                submit(current.id, e.target.value)
                 if (hasFeedback) setHasFeedback(false)
               }}
               disabled={hasFeedback}
-              className="w-32 text-center text-3xl font-bold bg-white/5 border-2 border-white/10 rounded-2xl py-3 text-white placeholder:text-slate-600 focus:outline-none focus:border-indigo-400 focus:bg-white/10 transition-all disabled:opacity-70"
-              placeholder="?"
+              className="w-full max-w-xs text-center text-xl font-bold bg-white/5 border-2 border-white/10 rounded-2xl px-4 py-3 text-white placeholder:text-slate-600 focus:outline-none focus:border-indigo-400 focus:bg-white/10 transition-all disabled:opacity-70"
+              placeholder="Enter answer"
               autoFocus
             />
             {!hasFeedback ? (
               <button
                 onClick={handleCheck}
-                disabled={currentAnswer === null}
-                className="px-6 py-3 bg-indigo-500 hover:bg-indigo-400 text-white font-semibold rounded-2xl disabled:opacity-40 active:scale-95 transition-all shadow-lg shadow-indigo-500/20"
+                disabled={currentAnswer === null || currentAnswer === undefined || currentAnswer === ''}
+                className="px-8 py-3 bg-indigo-500 hover:bg-indigo-400 text-white font-semibold rounded-2xl disabled:opacity-40 active:scale-95 transition-all shadow-lg shadow-indigo-500/20 w-full max-w-xs"
               >
                 Check
               </button>
             ) : (
               <button
                 onClick={handleNext}
-                className="px-6 py-3 bg-indigo-500 hover:bg-indigo-400 text-white font-semibold rounded-2xl active:scale-95 transition-all shadow-lg shadow-indigo-500/20"
+                className="px-8 py-3 bg-indigo-500 hover:bg-indigo-400 text-white font-semibold rounded-2xl active:scale-95 transition-all shadow-lg shadow-indigo-500/20 w-full max-w-xs"
               >
                 {isLast ? 'Finish' : 'Next'}
               </button>
             )}
           </div>
 
-          {hasFeedback && (
-            <div className="mt-8 text-lg">
-              {currentAnswer === current.answer ? (
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 text-emerald-400 font-semibold border border-emerald-500/20">
-                  ✓ Correct! Great work
-                </span>
-              ) : (
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 text-red-400 font-semibold border border-red-500/20">
-                  ✗ Answer: {current.answer}
-                </span>
-              )}
-            </div>
-          )}
+          {hasFeedback && (() => {
+            const raw = typeof currentAnswer === 'string' ? currentAnswer : currentAnswer
+            const expected = current.answer
+            const ok =
+              raw === null || raw === undefined || raw === ''
+                ? false
+                : typeof expected === 'number' && typeof raw === 'number'
+                  ? (Number.isInteger(expected) && Number.isInteger(raw)
+                      ? expected === raw
+                      : Math.abs(expected - (raw as number)) < 1e-6)
+                  : String(raw).replace(/\s/g, '').toLowerCase() === String(expected).replace(/\s/g, '').toLowerCase()
+            return (
+              <div className="mt-8 text-lg">
+                {ok ? (
+                  <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 text-emerald-300 font-semibold border border-emerald-500/20">
+                    Correct! Great work
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 text-red-300 font-semibold border border-red-500/20">
+                    Answer: {String(current.answer)}
+                  </span>
+                )}
+              </div>
+            )
+          })()}
         </div>
       </div>
     </div>
   )
 }
 
-function calcScore(problems: Problem[], answers: (number | null)[]): number {
+function calcScore(problems: Problem[], answers: (number | null | string)[]): number {
   let correct = 0
   for (let i = 0; i < problems.length; i++) {
-    if (answers[i] === problems[i].answer) correct++
+    const raw = answers[i]
+    const expected = problems[i].answer
+    if (raw === null || raw === undefined || raw === '') continue
+    if (typeof expected === 'number' && typeof raw === 'number') {
+      if (Number.isInteger(expected) && Number.isInteger(raw)) {
+        if (expected === raw) correct++
+      } else if (Math.abs(expected - (raw as number)) < 1e-6) {
+        correct++
+      }
+    } else if (String(raw).replace(/\s/g, '').toLowerCase() === String(expected).replace(/\s/g, '').toLowerCase()) {
+      correct++
+    }
   }
   return Math.round((correct / problems.length) * 100)
 }

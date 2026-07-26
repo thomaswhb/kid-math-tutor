@@ -2,49 +2,26 @@ import { describe, it, expect } from 'vitest'
 import { generateProblem } from './generateProblem'
 
 describe('generateProblem', () => {
-  it('generates algebra problems for year 9', () => {
-    const p = generateProblem('y9-algebra')
-    expect(['+', '-', '*', '/']).toContain(p.op)
-    expect(p.a).toBeGreaterThanOrEqual(1)
-    expect(p.a).toBeLessThanOrEqual(999)
-    expect(p.b).toBeGreaterThanOrEqual(1)
-    expect(p.b).toBeLessThanOrEqual(999)
+  it('generates linear equation question', () => {
+    const p = generateProblem('y9-linear', ['y9-linear'])
+    expect(p.question).toContain('Solve for x')
+    expect(p.answer).toBeTypeOf('number')
   })
 
-  it('generates non-negative answers', () => {
-    for (let i = 0; i < 50; i++) {
-      const p = generateProblem('y9-algebra')
-      expect(p.answer).toBeGreaterThanOrEqual(0)
-    }
+  it('generates binomial expand question', () => {
+    const p = generateProblem('y9-algebra', ['y9-expand'])
+    expect(p.question).toContain('Expand')
+    expect(p.answer).toContain('x')
   })
 
-  it('division always yields integer answers', () => {
-    for (let i = 0; i < 50; i++) {
-      const p = generateProblem('y9-algebra')
-      if (p.op === '/') {
-        expect(p.a % p.b).toBe(0)
-        expect(p.answer).toBe(p.a / p.b)
-      }
-    }
+  it('generates factorise question', () => {
+    const p = generateProblem('y9-algebra', ['y9-factorise'])
+    expect(p.question).toContain('Factorise')
+    expect(p.topic).toBe('y9-factorise')
   })
 
-  it('answers match the operation', () => {
-    for (let i = 0; i < 100; i++) {
-      const p = generateProblem('y9-algebra')
-      switch (p.op) {
-        case '+':
-          expect(p.answer).toBe(p.a + p.b)
-          break
-        case '-':
-          expect(p.answer).toBe(p.a - p.b)
-          break
-        case '*':
-          expect(p.answer).toBe(p.a * p.b)
-          break
-        case '/':
-          expect(p.answer).toBe(Math.floor(p.a / p.b))
-          break
-      }
-    }
+  it('generates index law question', () => {
+    const p = generateProblem('y9-algebra', ['y9-indices'])
+    expect(p.question).toMatch(/Simplify:/)
   })
 })
