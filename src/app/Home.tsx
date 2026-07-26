@@ -10,9 +10,9 @@ export default function Home() {
     <div className="min-h-screen bg-slate-950 text-white p-6">
       <header className="mb-8">
         <h1 className="text-3xl font-bold mb-1 bg-gradient-to-r from-indigo-300 to-violet-300 bg-clip-text text-transparent">
-          数学小挑战
+          Maths Challenge
         </h1>
-        <p className="text-slate-400">选一关，开始练习吧</p>
+        <p className="text-slate-400">Pick a topic and start practising</p>
       </header>
 
       <div className="grid gap-4 max-w-xl mx-auto">
@@ -35,9 +35,9 @@ export default function Home() {
               </div>
               {p && (
                 <div className="mt-3 flex items-center gap-3 text-xs text-slate-500 bg-white/5 rounded-lg px-3 py-1.5 w-fit">
-                  <span className="text-indigo-300">最高 {p.bestScore} 分</span>
+                  <span className="text-indigo-300">Best {p.bestScore}</span>
                   <span className="text-slate-600">·</span>
-                  <span>已玩 {p.played} 次</span>
+                  <span>{p.played} played</span>
                 </div>
               )}
             </Link>

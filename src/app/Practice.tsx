@@ -37,7 +37,7 @@ export default function Practice() {
   if (!session || !current) {
     return (
       <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
-        加载中...
+        Loading...
       </div>
     )
   }
@@ -118,14 +118,14 @@ export default function Practice() {
                 disabled={currentAnswer === null}
                 className="px-6 py-3 bg-indigo-500 hover:bg-indigo-400 text-white font-semibold rounded-2xl disabled:opacity-40 active:scale-95 transition-all shadow-lg shadow-indigo-500/20"
               >
-                确定
+                Check
               </button>
             ) : (
               <button
                 onClick={handleNext}
                 className="px-6 py-3 bg-indigo-500 hover:bg-indigo-400 text-white font-semibold rounded-2xl active:scale-95 transition-all shadow-lg shadow-indigo-500/20"
               >
-                {isLast ? '完成' : '下一题'}
+                {isLast ? 'Finish' : 'Next'}
               </button>
             )}
           </div>
@@ -134,11 +134,11 @@ export default function Practice() {
             <div className="mt-8 text-lg">
               {currentAnswer === current.answer ? (
                 <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 text-emerald-400 font-semibold border border-emerald-500/20">
-                  ✓ 正确！太棒了
+                  ✓ Correct! Great work
                 </span>
               ) : (
                 <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 text-red-400 font-semibold border border-red-500/20">
-                  ✗ 再想想，答案是 {current.answer}
+                  ✗ Answer: {current.answer}
                 </span>
               )}
             </div>

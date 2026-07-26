@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { generateProblem } from './generateProblem'
 
 describe('generateProblem', () => {
-  it('generates addition problems for y9-algebra', () => {
+  it('generates algebra problems for year 9', () => {
     const p = generateProblem('y9-algebra')
     expect(['+', '-', '*', '/']).toContain(p.op)
     expect(p.a).toBeGreaterThanOrEqual(1)
