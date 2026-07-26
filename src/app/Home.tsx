@@ -9,7 +9,9 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-slate-950 text-white p-6">
       <header className="mb-8">
-        <h1 className="text-3xl font-bold mb-1">数学小挑战</h1>
+        <h1 className="text-3xl font-bold mb-1 bg-gradient-to-r from-indigo-300 to-violet-300 bg-clip-text text-transparent">
+          数学小挑战
+        </h1>
         <p className="text-slate-400">选一关，开始练习吧</p>
       </header>
 
@@ -20,19 +22,21 @@ export default function Home() {
             <Link
               key={g.id}
               to={`/practice/${g.id}`}
-              className="block bg-slate-900 border border-slate-800 rounded-2xl p-5 active:scale-95 transition-transform"
+              className="group block bg-surface border border-white/10 rounded-2xl p-5 hover:bg-surface-hover hover:border-white/20 active:scale-[0.98] transition-all duration-200 shadow-lg shadow-black/20"
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-xl font-semibold">{g.title}</h2>
+                  <h2 className="text-xl font-semibold text-slate-100 group-hover:text-white transition-colors">
+                    {g.title}
+                  </h2>
                   <p className="text-slate-400 text-sm mt-0.5">{g.subtitle}</p>
                 </div>
-                <ArrowRight className="w-6 h-6 text-slate-500" />
+                <ArrowRight className="w-6 h-6 text-slate-500 group-hover:text-indigo-300 transition-colors" />
               </div>
               {p && (
-                <div className="mt-3 flex items-center gap-3 text-sm text-slate-400">
-                  <span>最高 {p.bestScore} 分</span>
-                  <span>·</span>
+                <div className="mt-3 flex items-center gap-3 text-xs text-slate-500 bg-white/5 rounded-lg px-3 py-1.5 w-fit">
+                  <span className="text-indigo-300">最高 {p.bestScore} 分</span>
+                  <span className="text-slate-600">·</span>
                   <span>已玩 {p.played} 次</span>
                 </div>
               )}

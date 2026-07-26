@@ -2,7 +2,7 @@ export interface Problem {
   id: string
   a: number
   b: number
-  op: '+' | '-'
+  op: '+' | '-' | '*' | '/'
   answer: number
 }
 
@@ -19,7 +19,7 @@ export interface GradeConfig {
   title: string
   subtitle: string
   range: [number, number]
-  operations: ('+' | '-')[]
+  operations: ('+' | '-' | '*' | '/')[]
   count: number
 }
 

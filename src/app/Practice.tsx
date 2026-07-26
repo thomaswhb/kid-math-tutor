@@ -64,23 +64,25 @@ export default function Practice() {
         <div className="flex items-center gap-3 mb-6">
           <button
             onClick={() => navigate('/')}
-            className="p-2 -ml-2 rounded-xl hover:bg-slate-800"
+            className="p-2 -ml-2 rounded-xl hover:bg-white/10 transition-colors"
           >
             <ArrowLeft className="w-6 h-6" />
           </button>
           <div className="flex-1">
-            <h1 className="text-lg font-semibold">{grade?.title}</h1>
+            <h1 className="text-lg font-semibold text-slate-100">{grade?.title}</h1>
             <div className="flex gap-1 mt-1">
               {session.problems.map((_, i) => (
                 <div
                   key={i}
-                  className={`h-1.5 flex-1 rounded-full ${
-                    i < session.currentIndex
-                      ? 'bg-success'
-                      : i === session.currentIndex
-                        ? 'bg-primary'
-                        : 'bg-slate-700'
-                  }`}
+                  className="h-1.5 flex-1 rounded-full transition-colors duration-300 bg-slate-800"
+                  style={{
+                    backgroundColor:
+                      i < session.currentIndex
+                        ? '#34d399'
+                        : i === session.currentIndex
+                          ? '#6366f1'
+                          : 'rgba(255,255,255,0.05)',
+                  }}
                 />
               ))}
             </div>
@@ -90,8 +92,8 @@ export default function Practice() {
           </span>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 text-center">
-          <div className="text-5xl font-bold mb-8 tabular-nums">
+        <div className="bg-surface border border-white/10 rounded-3xl p-8 text-center shadow-2xl shadow-black/30 backdrop-blur-sm">
+          <div className="text-5xl font-bold mb-8 tabular-nums text-slate-100">
             {current.a} {current.op} {current.b} = ?
           </div>
 
@@ -106,7 +108,7 @@ export default function Practice() {
                 if (hasFeedback) setHasFeedback(false)
               }}
               disabled={hasFeedback}
-              className="w-32 text-center text-3xl font-bold bg-slate-800 border-2 border-slate-700 rounded-2xl py-3 text-white placeholder:text-slate-600 focus:outline-none focus:border-primary disabled:opacity-70"
+              className="w-32 text-center text-3xl font-bold bg-white/5 border-2 border-white/10 rounded-2xl py-3 text-white placeholder:text-slate-600 focus:outline-none focus:border-indigo-400 focus:bg-white/10 transition-all disabled:opacity-70"
               placeholder="?"
               autoFocus
             />
@@ -114,14 +116,14 @@ export default function Practice() {
               <button
                 onClick={handleCheck}
                 disabled={currentAnswer === null}
-                className="px-6 py-3 bg-primary text-white font-semibold rounded-2xl disabled:opacity-40 active:scale-95 transition-transform"
+                className="px-6 py-3 bg-indigo-500 hover:bg-indigo-400 text-white font-semibold rounded-2xl disabled:opacity-40 active:scale-95 transition-all shadow-lg shadow-indigo-500/20"
               >
                 确定
               </button>
             ) : (
               <button
                 onClick={handleNext}
-                className="px-6 py-3 bg-primary text-white font-semibold rounded-2xl active:scale-95 transition-transform"
+                className="px-6 py-3 bg-indigo-500 hover:bg-indigo-400 text-white font-semibold rounded-2xl active:scale-95 transition-all shadow-lg shadow-indigo-500/20"
               >
                 {isLast ? '完成' : '下一题'}
               </button>
@@ -129,11 +131,13 @@ export default function Practice() {
           </div>
 
           {hasFeedback && (
-            <div className="mt-6 text-lg">
+            <div className="mt-8 text-lg">
               {currentAnswer === current.answer ? (
-                <span className="text-success font-semibold">✓ 正确！太棒了</span>
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 text-emerald-400 font-semibold border border-emerald-500/20">
+                  ✓ 正确！太棒了
+                </span>
               ) : (
-                <span className="text-danger font-semibold">
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 text-red-400 font-semibold border border-red-500/20">
                   ✗ 再想想，答案是 {current.answer}
                 </span>
               )}
